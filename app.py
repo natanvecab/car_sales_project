@@ -6,7 +6,7 @@ import streamlit as st
 st.header('Análise de Vendas de Carros: Visualizando Dados de Anúncios')
 
 # Ler o arquivo CSV
-car_data = pd.read_csv('C:\\Users\\navec\\Desktop\\Estudo\\vehicles_us.csv')
+car_data = pd.read_csv('vehicles_us.csv')
 
 # Preencher os valores nulos na coluna 'model_year' com 'N/A'
 car_data['model_year'].fillna(value="N/A", inplace=True)
@@ -21,7 +21,7 @@ car_data['odometer'] = pd.to_numeric(car_data['odometer'], errors='coerce').roun
 car_data['model_year'] = car_data['model_year'].astype(str)
 
 # Extrair a marca do carro da coluna 'model'
-car_data['car_brand'] = car_data['model'].apply(lambda x: x.split()[0])
+car_data['car_brand'] = car_data['model'].apply(lambda x: x.split()[0] if isinstance(x, str) else "N/A")
 
 # Criar um botão para o histograma
 hist_button = st.button('Histograma de hodômetro')
@@ -58,5 +58,3 @@ if scatter_button_color:
     st.write('Criando um gráfico de dispersão para identificar as cores por ano dos veículos')
     fig_scatter_color = px.scatter(car_data, x='model_year', y='paint_color')
     st.plotly_chart(fig_scatter_color, use_container_width=True)
-
-
